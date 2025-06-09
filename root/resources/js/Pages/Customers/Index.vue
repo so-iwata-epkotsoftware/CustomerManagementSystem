@@ -14,8 +14,6 @@ const props = defineProps({
 
 });
 
-console.log(props.customers);
-
 const customerData = ({});
 
 const showModal = ref(false);
@@ -30,7 +28,6 @@ const createModal = ref(false);
 const createCustomer = () => {
     createModal.value = true;
 };
-
 </script>
 
 <template>

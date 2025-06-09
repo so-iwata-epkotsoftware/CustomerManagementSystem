@@ -16,6 +16,8 @@ class Customer extends Model
 
     protected $appends = ['status_conversion', 'updated_at_formatted'];
 
+    protected $fillable = ['name', 'email', 'phone', 'company_name', 'status'];
+
     public function Interactions()
     {
         return $this->hasMany(Interaction::class);
