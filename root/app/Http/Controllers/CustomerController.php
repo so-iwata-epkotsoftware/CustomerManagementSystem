@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCustomerRequest;
-use App\Http\Requests\UpdateCustomerRequest;
+use App\Http\Requests\Customers\StoreCustomerRequest;
+use App\Http\Requests\Customers\UpdateCustomerRequest;
 use App\Models\Customer;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class CustomerController extends Controller
@@ -16,88 +14,38 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $result = DB::table('customers as c')
-        ->join('interactions as i', 'i.customer_id', '=', 'c.id')
-        ->join('users as u', 'i.user_id', '=', 'u.id')
-        ->select(
-            'c.id as customer_id',
-            'c.name as customer_name',
-            'c.updated_at as customer_updated_at',
-            'i.content AS interaction_content',
-            'u.id as user_id',
-            'u.name as user_name'
-        )
-        ->get();
-
-        $grouped = $result->groupBy('customer_id')
-                    ->map(function ($items) {
-                        return [
-                            'customer_name' => $items->first()->customer_name,
-                            'updated_at' => $items->max('customer_updated_at'),
-                            'content' => $items->map(function($item) {
-                                return [
-                                    'content' => $item->interaction_content,
-                                ];
-                            }),
-                            'users' => $items->map(function ($item) {
-                                return [
-                                    'user_id' => $item->user_id,
-                                    'user_name' => $item->user_name,
-                                ];
-                            }),
-                        ];
-                    });
-
         return Inertia::render('Customers/Index', [
             'customers' => Customer::select('id', 'name', 'email', 'phone', 'company_name', 'status', 'updated_at')->paginate(10)
         ]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * 新規顧客登録処理
      */
     public function store(StoreCustomerRequest $request)
     {
-        //
+        Customer::create($request->validated());
+
+        return to_route('customers.index');
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * 顧客更新処理
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        //
+        $customer->update($request->validated());
+
+        return to_route('customers.index');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 顧客削除処理.
      */
     public function destroy(Customer $customer)
     {
-        //
+        $customer->delete();
+
+        return to_route('customers.index');
     }
 }

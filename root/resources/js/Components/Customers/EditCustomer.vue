@@ -19,7 +19,7 @@ const form = reactive({
 });
 
 const updateCustomer = (id) => {
-    router.put(route('customers.update', {id}), form, {
+    router.post(route('customers.update', {id}), form, {
         onSuccess: () => {
             emit('close');
         },
@@ -32,9 +32,8 @@ const updateCustomer = (id) => {
 const deleteCustomer = id => {
     if (!confirm('本当に削除しますか？')) return;
 
-    router.delete(route('customers.destroy', {id}), {
-        onSuccess: () => emit('close'),
-    });
+    router.post(route('customers.destroy', {id}));
+    emit('close');
 };
 
 const emit = defineEmits(['close']);

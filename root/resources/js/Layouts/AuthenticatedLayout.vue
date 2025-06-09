@@ -45,6 +45,12 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     顧客一覧
                                 </NavLink>
+                                <NavLink
+                                    :href="route('interactions.index')"
+                                    :active="route().current('interactions.index')"
+                                >
+                                    対応履歴
+                                </NavLink>
                             </div>
                         </div>
 
@@ -151,6 +157,18 @@ const showingNavigationDropdown = ref(false);
                             :active="route().current('dashboard')"
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('customers.index')"
+                            :active="route().current('customers.index')"
+                        >
+                            顧客一覧
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('interactions.index')"
+                            :active="route().current('interactions.index')"
+                        >
+                            対応履歴
                         </ResponsiveNavLink>
                     </div>
 

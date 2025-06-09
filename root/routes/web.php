@@ -1,26 +1,36 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\EnsureIsAdmin;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-
+// 顧客
 Route::middleware('auth')
     ->prefix('customers')
     ->name('customers.')
     ->controller(CustomerController::class)
     ->group(function() {
-        Route::get('/', 'index')->name('index')->middleware('is_admin'); # 顧客一覧
-        Route::get('{customer}', 'show')->name('show'); # 顧客詳細
-        Route::get('create', 'create')->name('create'); # 顧客新規作成
-        Route::get('{customer}/edit', 'edit')->name('edit'); # 顧客編集(staffは削除不可）
+        Route::get('/', 'index')->name('index'); # 顧客一覧
+        Route::post('/', 'store')->name('store'); # 新規顧客処理
+        Route::post('/{customer}/update', 'update')->name('update'); # 顧客新規作成
+        Route::post('{customer}/destroy', 'destroy')->name('destroy'); # 顧客編集(staffは削除不可）
     });
 
-// Route::resource('customers', CustomerController::class);
-
+// 対応履歴
+Route::middleware('auth')
+    ->prefix('interactions')
+    ->name('interactions.')
+    ->controller(InteractionController::class)
+    ->group(function() {
+        Route::get('/', 'index')->name('index'); # 対応履歴一覧
+        Route::get('{interaction}', 'show')->name('show'); # 対応履歴詳細
+        Route::get('create', 'create')->name('create'); # 対応履歴新規作成
+        Route::get('{interaction}/edit', 'edit')->name('edit'); # 対応履歴編集(staffは削除不可）
+    });
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
