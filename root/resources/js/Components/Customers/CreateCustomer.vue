@@ -1,5 +1,5 @@
 <script setup>
-import { Head, router, Link } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import { reactive } from 'vue';
 
 import InputError from '@/Components/InputError.vue';
@@ -16,8 +16,9 @@ const form = reactive({
     status : '',
 });
 
-const createCustomer = (id) => {
-    router.put(route('customers.update', {id}), form, {
+const createCustomer = () => {
+    console.log(form);
+    router.post(route('customers.store'), form, {
         onSuccess: () => {
             emit('close');
         },
@@ -26,7 +27,6 @@ const createCustomer = (id) => {
         }
     });
 };
-
 
 const emit = defineEmits(['close']);
 
@@ -53,7 +53,7 @@ const close = () => {
 
             <div class="p-6 text-gray-900 mt-6">
                 <section class="text-gray-600 body-font relative flex flex-col">
-                    <form @submit.prevent="updateCustomer(form.id)">
+                    <form @submit.prevent="createCustomer">
                         <div class="container px-5 py-5 mx-auto">
                             <div class="lg:w-full md:w-2/3 mx-auto">
                                 <div class="-m-2">
@@ -112,8 +112,9 @@ const close = () => {
                                     </div>
 
                                     <div class="p-2 w-1/3 mx-auto">
-                                        <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
-                                            次へ
+                                        <button
+                                            class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+                                            登録
                                         </button>
                                     </div>
                                 </div>
