@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Interaction;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+
+    protected $appends = ['created_at_formatted'];
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +24,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'role',
         'password',
     ];
 
@@ -47,8 +51,23 @@ class User extends Authenticatable
         ];
     }
 
-    public function Interactions()
+    public function interactions()
     {
         return $this->hasMany(Interaction::class);
+    }
+
+    public function login_logs()
+    {
+        return $this->hasMany(Login_log::class);
+    }
+
+     // created_at のフォーマット済みアクセサ
+    protected function createdAtFormatted(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->created_at
+                ? $this->created_at->format('Y年m月d日')
+                : null,
+        );
     }
 }
