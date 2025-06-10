@@ -5,9 +5,13 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
+
+// ナビゲーションでadminのみ表示用
+const role = usePage().props.role.role;
+
 </script>
 
 <template>
@@ -44,6 +48,12 @@ const showingNavigationDropdown = ref(false);
                                     :active="route().current('customers.index')"
                                 >
                                     顧客一覧
+                                </NavLink>
+                                <NavLink v-show="role === 'admin'"
+                                    :href="route('users.index')"
+                                    :active="route().current('users.index')"
+                                >
+                                    ユーザー一覧
                                 </NavLink>
                                 <NavLink
                                     :href="route('interactions.index')"
@@ -163,6 +173,12 @@ const showingNavigationDropdown = ref(false);
                             :active="route().current('customers.index')"
                         >
                             顧客一覧
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('users.index')"
+                            :active="route().current('users.index')"
+                        >
+                            ユーザー一覧
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             :href="route('interactions.index')"
