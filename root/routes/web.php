@@ -15,9 +15,9 @@ Route::middleware('auth')
     ->controller(CustomerController::class)
     ->group(function() {
         Route::get('/', 'index')->name('index'); # 顧客一覧
-        Route::post('/', 'store')->name('store'); # 新規顧客処理
-        Route::post('/{customer}/update', 'update')->name('update'); # 顧客新規作成
-        Route::post('{customer}/destroy', 'destroy')->name('destroy'); # 顧客編集(staffは削除不可）
+        Route::post('/', 'store')->name('store'); # 新規顧客登録処理
+        Route::post('/{customer}/update', 'update')->name('update'); # 顧客更新処理
+        Route::post('{customer}/destroy', 'destroy')->name('destroy')->middleware(EnsureIsAdmin::class); # 顧客削除処理
     });
 
 // 対応履歴
@@ -27,9 +27,9 @@ Route::middleware('auth')
     ->controller(InteractionController::class)
     ->group(function() {
         Route::get('/', 'index')->name('index'); # 対応履歴一覧
-        Route::get('{interaction}', 'show')->name('show'); # 対応履歴詳細
-        Route::get('create', 'create')->name('create'); # 対応履歴新規作成
-        Route::get('{interaction}/edit', 'edit')->name('edit'); # 対応履歴編集(staffは削除不可）
+        Route::post('/', 'store')->name('store'); # 新規対応履歴登録処理
+        Route::post('/{customer}/update', 'update')->name('update'); # 対応履歴更新処理
+        Route::post('{customer}/destroy', 'destroy')->name('destroy'); # 対応履歴削除処理
     });
 
 Route::get('/', function () {

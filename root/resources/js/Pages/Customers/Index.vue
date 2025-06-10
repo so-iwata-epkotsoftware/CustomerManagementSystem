@@ -7,6 +7,7 @@ import Modal from '@/Components/Modal.vue';
 import Pagination from '@/Components/Pagination.vue';
 import ShowCustomer from '@/Components/Customers/EditCustomer.vue';
 import CreateCustomer from '@/Components/Customers/CreateCustomer.vue';
+import FlashMessage from '@/Components/FlashMessage.vue';
 
 const props = defineProps({
     customers : Object,
@@ -53,7 +54,9 @@ const createCustomer = () => {
                         </Modal>
 
                         <section class="text-gray-600 body-font">
+                            <FlashMessage/>
                             <div class="container px-5 mx-auto relative">
+
                                 <div class="lg:w-2/3 w-full mx-auto">
                                     <div class="flex text-center w-full my-5">
                                         <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">
