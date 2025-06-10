@@ -17,7 +17,6 @@ const form = reactive({
 });
 
 const createCustomer = () => {
-    console.log(form);
     router.post(route('customers.store'), form, {
         onSuccess: () => {
             emit('close');

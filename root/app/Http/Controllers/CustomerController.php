@@ -26,7 +26,10 @@ class CustomerController extends Controller
     {
         Customer::create($request->validated());
 
-        return to_route('customers.index');
+        return to_route('customers.index')->with([
+            'message' => '登録完了',
+            'status' => 'add',
+        ]);
     }
 
     /**
@@ -36,7 +39,10 @@ class CustomerController extends Controller
     {
         $customer->update($request->validated());
 
-        return to_route('customers.index');
+        return to_route('customers.index')->with([
+            'message' => '更新完了',
+            'status' => 'update',
+        ]);
     }
 
     /**
@@ -46,6 +52,9 @@ class CustomerController extends Controller
     {
         $customer->delete();
 
-        return to_route('customers.index');
+        return to_route('customers.index')->with([
+            'message' => '削除完了',
+            'status' => 'delete',
+        ]);
     }
 }
