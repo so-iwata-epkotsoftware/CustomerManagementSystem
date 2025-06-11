@@ -19,7 +19,7 @@ class InteractionSeeder extends Seeder
         $customers = Customer::all();
 
         foreach ($customers as $customer) {
-            Interaction::factory(rand(1, 5))->create([
+            Interaction::factory(rand(1, 30))->create([
                 'customer_id' => $customer->id,
                 'user_id' => $users->random()->id,
             ]);

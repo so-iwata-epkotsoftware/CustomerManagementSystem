@@ -3,63 +3,70 @@
 namespace App\Http\Controllers\Interaction;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Interactions\storeInteractionRequest;
+use App\Http\Requests\Interactions\updateInteractionRequest;
+use App\Models\Customer;
+use App\Models\Interaction;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class InteractionController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 対応履歴一覧表示
      */
-    public function index()
+    public function index(String $id)
     {
-        //
+        $interactions = Customer::where('id', $id)
+                        ->select('id', 'name', 'email', 'phone', 'company_name', 'status')
+                        ->with(['interactions' => function($query) {
+                            $query->select('id','user_id', 'customer_id', 'content', 'created_at', 'status', 'supported_types')->latest('created_at')
+                                ->with(['user' => function($query) {
+                                    $query->select('id', 'name', 'email');
+                                }]);
+                        }])->paginate(10);
+
+        return Inertia::render('Interactions/Index', [
+            'interactions' => $interactions,
+        ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * 対応履歴新規登録処理
      */
-    public function create()
+    public function store(storeInteractionRequest $request)
     {
-        //
+        Interaction::create($request->validated());
+
+        return to_route('interactions.index', $request->customer_id)->with([
+            'message' => '登録完了',
+            'status' => 'add',
+        ]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 対応履歴更新処理
      */
-    public function store(Request $request)
+    public function update(updateInteractionRequest $request, Interaction $interaction)
     {
-        //
+        $interaction->update($request->validated());
+
+        return to_route('interactions.index', $request->customer_id)->with([
+            'message' => '更新完了',
+            'status' => 'update',
+        ]);
     }
 
     /**
-     * Display the specified resource.
+     * 対応履歴削除処理
      */
-    public function show(string $id)
+    public function destroy(Request $request, Interaction $interaction)
     {
-        //
-    }
+        $interaction->delete();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return to_route('interactions.index', $request->customer_id)->with([
+            'message' => '削除完了',
+            'status' => 'delete',
+        ]);
     }
 }

@@ -16,13 +16,24 @@ class EnsureIsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (str_contains($request->path(), 'interactions'))
+        {
+            if (Auth::user()->role !== 'admin')
+            {
+                return to_route('interactions.index', $request->customer_id)->with([
+                    'message' => '管理者専用機能',
+                    'status' => 'error',
+                ]);
+            }
+        }
+
         if (Auth::user()->role !== 'admin')
         {
             // abort(403, '管理者専用機能です。');
             return to_route('customers.index')->with([
-            'message' => '管理者専用機能',
-            'status' => 'error',
-        ]);
+                'message' => '管理者専用機能',
+                'status' => 'error',
+            ]);
         }
         return $next($request);
     }

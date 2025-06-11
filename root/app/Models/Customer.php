@@ -28,7 +28,7 @@ class Customer extends Model
     {
         return Attribute::make(
             get: fn () => match ($this->status) {
-                'prospected'    => '見込み',
+                'prospected'    => '未対応',
                 'corresponding' => '対応中',
                 'completed'     => '完了',
             },

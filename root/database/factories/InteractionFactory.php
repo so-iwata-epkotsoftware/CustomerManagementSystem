@@ -18,10 +18,15 @@ class InteractionFactory extends Factory
      */
     public function definition(): array
     {
+        $statuses = ['prospected', 'corresponding', 'completed'];
+        $supported_types = ['opposing', 'phone', 'email', 'other'];
+
         return [
             'customer_id' => Customer::factory(),
             'user_id' => User::factory(),
             'content' => fake()->realText(120),
+            'status' => fake()->randomElement($statuses),
+            'supported_types' => fake()->randomElement($supported_types),
             'created_at' => fake()->dateTimeBetween('-3 months', 'now'),
         ];
     }

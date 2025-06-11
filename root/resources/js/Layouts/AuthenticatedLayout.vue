@@ -55,12 +55,6 @@ const role = usePage().props.role.role;
                                 >
                                     ユーザー一覧
                                 </NavLink>
-                                <NavLink
-                                    :href="route('interactions.index')"
-                                    :active="route().current('interactions.index')"
-                                >
-                                    対応履歴
-                                </NavLink>
                             </div>
                         </div>
 
@@ -179,12 +173,6 @@ const role = usePage().props.role.role;
                             :active="route().current('users.index')"
                         >
                             ユーザー一覧
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            :href="route('interactions.index')"
-                            :active="route().current('interactions.index')"
-                        >
-                            対応履歴
                         </ResponsiveNavLink>
                     </div>
 
