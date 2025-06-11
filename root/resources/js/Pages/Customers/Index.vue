@@ -5,7 +5,6 @@ import { ref } from 'vue';
 
 import Modal from '@/Components/Modal.vue';
 import Pagination from '@/Components/Pagination.vue';
-import ShowCustomer from '@/Components/Customers/EditCustomer.vue';
 import CreateCustomer from '@/Components/Customers/CreateCustomer.vue';
 import FlashMessage from '@/Components/FlashMessage.vue';
 
@@ -15,21 +14,20 @@ const props = defineProps({
 
 });
 
-const customerData = ({});
-
-const showModal = ref(false);
-
-const showCustomer = (customer) => {
-    customerData.value = customer;
-    showModal.value = true;
-};
-
+// 顧客新規登録
 const createModal = ref(false);
-
 const createCustomer = () => {
     createModal.value = true;
 };
+
+// 対応履歴移動
+const moveInteraction = id => {
+    router.get(route('interactions.index', id));
+};
+
 </script>
+
+
 
 <template>
     <Head title="顧客一覧" />
@@ -45,10 +43,6 @@ const createCustomer = () => {
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
-                        <Modal :show="showModal" @close="showModal=false">
-                            <ShowCustomer :customer="customerData.value" :errors="errors" @close="showModal=false" />
-                        </Modal>
-
                         <Modal :show="createModal" @close="createModal=false">
                             <CreateCustomer :errors="errors" @close="createModal=false"/>
                         </Modal>
@@ -76,7 +70,7 @@ const createCustomer = () => {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr v-for="customer in props.customers.data" :key="customer.id" @click="showCustomer(customer)"
+                                        <tr v-for="customer in props.customers.data" :key="customer.id" @click="moveInteraction(customer.id)"
                                             class="border-b-2 border-gray-200 cursor-pointer transition transform hover:scale-[1.03] hover:bg-gray-300">
                                             <td class="px-4 py-3 whitespace-nowrap">{{ customer.company_name }}：{{ customer.name }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap">{{ customer.email }}</td>

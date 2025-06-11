@@ -101,7 +101,7 @@ const close = () => {
                                             v-model="form.status"
                                             class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 text-base text-gray-700 py-2 px-3"
                                             >
-                                            <option value="prospected">見込み</option>
+                                            <option value="prospected">未対応</option>
                                             <option value="corresponding">対応中</option>
                                             <option value="completed">完了</option>
                                             </select>

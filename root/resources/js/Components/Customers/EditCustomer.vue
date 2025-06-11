@@ -29,13 +29,6 @@ const updateCustomer = (id) => {
     });
 };
 
-const deleteCustomer = id => {
-    if (!confirm('本当に削除しますか？')) return;
-
-    router.post(route('customers.destroy', {id}));
-    emit('close');
-};
-
 const emit = defineEmits(['close']);
 
 const close = () => {
@@ -52,9 +45,6 @@ const close = () => {
                 <h1 class="sm:text-xl text-xl font-medium title-font mb-2 text-gray-900">顧客情報更新</h1>
             </div>
             <div class="flex justify-between fixed right-0 top-0 mx-1 my-2">
-                <span @click="deleteCustomer(form.id)" class="cursor-pointer transition transform hover:scale-[1.5]">
-                    <img src="/images/trash_icon.svg" class="h-7 w-10" alt="ゴミ箱">
-                </span>
                 <span @click="close" class="cursor-pointer transition transform hover:scale-[1.5]">
                     <img src="/images/close_icon.svg" class="h-7 w-10" alt="閉じる">
                 </span>
